@@ -3,19 +3,19 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./tms.backend/src
+          path: ./vehicle-alert.backend/src
           target: /app/src
         - action: rebuild
-          path: ./tms.backend/package.json
+          path: ./vehicle-alert.backend/package.json
 
   frontend:
     develop:
       watch:
         - action: sync
-          path: ./tms.frontend
+          path: ./vehicle-alert.frontend
           target: /app
           ignore:
             - node_modules/
             - .next/
         - action: rebuild
-          path: ./tms.frontend/package.json
+          path: ./vehicle-alert.frontend/package.json

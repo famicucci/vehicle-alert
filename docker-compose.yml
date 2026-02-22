@@ -1,7 +1,7 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: tms-mysql
+    container_name: vehicle-alert-mysql
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: yourpassword
@@ -12,8 +12,8 @@ services:
       - tms_mysql_data:/var/lib/mysql
 
   backend:
-    build: ./tms.backend
-    container_name: tms-backend
+    build: ./vehicle-alert.backend
+    container_name: vehicle-alert-backend
     restart: always
     environment:
       DB_TYPE: mysql
@@ -29,8 +29,8 @@ services:
     working_dir: /app
 
   frontend:
-    build: ./tms.frontend
-    container_name: tms-frontend
+    build: ./vehicle-alert.frontend
+    container_name: vehicle-alert-frontend
     restart: always
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:4000

@@ -12,16 +12,16 @@
 .vercel
 
 # frontend
-/tms.frontend/node_modules
-/tms.frontend/dist
-/tms.frontend/build
-/tms.frontend/.next
+/vehicle-alert.frontend/node_modules
+/vehicle-alert.frontend/dist
+/vehicle-alert.frontend/build
+/vehicle-alert.frontend/.next
 
 # backend
-/tms.backend/node_modules
-/tms.backend/dist
-/tms.backend/build
-/tms.backend/.next
+/vehicle-alert.backend/node_modules
+/vehicle-alert.backend/dist
+/vehicle-alert.backend/build
+/vehicle-alert.backend/.next
 
 
 # Yarn and PnP
