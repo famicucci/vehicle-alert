@@ -1,6 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { TestCases } from './test-cases/test-cases.entity';
-import { Tests } from './tests/tests.entity';
+import { Colors } from './colors/colors.entity';
 
 const config: TypeOrmModuleOptions = {
   type: process.env.DB_TYPE as 'mysql',
@@ -9,7 +9,7 @@ const config: TypeOrmModuleOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: [TestCases, Tests],
+  entities: [TestCases, Colors],
   synchronize: true, // Auto-creates tables in dev, turn off in production!
 };
 
