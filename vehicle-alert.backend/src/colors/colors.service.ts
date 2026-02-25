@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TestCases as ColorsEntity } from '../test-cases/test-cases.entity';
+import { Colors as ColorsEntity } from '../colors/colors.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
