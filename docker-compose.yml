@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: yourpassword
-      MYSQL_DATABASE: tmsdb
+      MYSQL_DATABASE: vehiclealertdb
     ports:
       - "3307:3306"
     volumes:
@@ -21,7 +21,7 @@ services:
       DB_PORT: 3306
       DB_USERNAME: root
       DB_PASSWORD: yourpassword
-      DB_DATABASE: tmsdb
+      DB_NAME: vehiclealertdb
     ports:
       - "4000:4000"
     depends_on:

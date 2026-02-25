@@ -1,17 +1,20 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from '../app.module';
-import { testCasesMocks } from '../test-cases/mocks/test-cases.mock';
-import { TestCasesService } from '../test-cases/test-cases.service';
+// import { NestFactory } from '@nestjs/core';
+// import { AppModule } from '../app.module';
+// import { ColorsService } from 'src/colors/colors.service';
 
-async function bootstrap() {
-  const app = await NestFactory.createApplicationContext(AppModule);
-  const testCasesService = app.get(TestCasesService);
+// const colorsMocks = [
+//   { name: 'Red', hex: '#FF0000' },
+//   { name: 'Green', hex: '#00FF00' },
+//   { name: 'Blue', hex: '#0000FF' },
+// ];
 
-  await Promise.all(
-    testCasesMocks.map((q) => testCasesService.createTestCase(q)),
-  );
+// async function bootstrap() {
+//   const app = await NestFactory.createApplicationContext(AppModule);
+//   const colorsService = app.get(ColorsService);
 
-  await app.close();
-}
+//   await Promise.all(colorsMocks.map((q) => colorsService.createColor(q)));
 
-bootstrap();
+//   await app.close();
+// }
+
+// bootstrap();
