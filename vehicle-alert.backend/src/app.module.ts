@@ -4,6 +4,7 @@ import config from './typeorm.config';
 import { ColorsModule } from './colors/colors.module';
 import { BrandsModule } from './brands/brands.module';
 import { VehicleStatusModule } from './vehicle-status/vehicle-status.module';
+import { VehiclesModule } from './vehicles/vehicles.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { VehicleStatusModule } from './vehicle-status/vehicle-status.module';
     ColorsModule,
     BrandsModule,
     VehicleStatusModule,
+    VehiclesModule,
   ],
   controllers: [],
   providers: [],
