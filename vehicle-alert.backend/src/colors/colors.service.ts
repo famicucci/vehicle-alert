@@ -13,4 +13,9 @@ export class ColorsService {
   getColors(): Promise<ColorsEntity[]> {
     return this.colorsRepository.find();
   }
+
+  createColor(color: Partial<ColorsEntity>): Promise<ColorsEntity> {
+    const newColor = this.colorsRepository.create(color);
+    return this.colorsRepository.save(newColor);
+  }
 }
