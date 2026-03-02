@@ -1,14 +1,21 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Brands } from './brands.entity';
 
 @Injectable()
 export class BrandsService {
-    getBrands() {
-        return [
-            { id: 1, name: 'Toyota' },
-            { id: 2, name: 'Honda' },
-            { id: 3, name: 'Ford' },
-            { id: 4, name: 'Chevrolet' },
-            { id: 5, name: 'Nissan' },
-        ];
-    }
+  constructor(
+    @InjectRepository(Brands)
+    private brandsRepository: Repository<Brands>,
+  ) {}
+
+  getBrands() {
+    return this.brandsRepository.find();
+  }
+
+  createBrand(brand: { name: string }) {
+    const newBrand = this.brandsRepository.create(brand);
+    return this.brandsRepository.save(newBrand);
+  }
 }
