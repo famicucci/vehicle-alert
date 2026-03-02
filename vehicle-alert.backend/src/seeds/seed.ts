@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../app.module';
 import { ColorsService } from '../colors/colors.service';
 import { BrandsService } from '../brands/brands.service';
+import { VehicleStatusService } from '../vehicle-status/vehicle-status.service';
 
 const colorsMocks = [
   { name: 'Rojo', code: '#FF0000' },
@@ -34,13 +35,19 @@ const brandsMocks = [
   { name: 'Mitsubishi' },
 ];
 
+const vehicleStatusMocks = [{ name: 'Residente' }, { name: 'Visitante' }];
+
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
   const colorsService = app.get(ColorsService);
   const brandsService = app.get(BrandsService);
+  const vehicleStatusService = app.get(VehicleStatusService);
 
   await Promise.all(colorsMocks.map((q) => colorsService.createColor(q)));
   await Promise.all(brandsMocks.map((q) => brandsService.createBrand(q)));
+  await Promise.all(
+    vehicleStatusMocks.map((q) => vehicleStatusService.createVehicleStatus(q)),
+  );
 
   await app.close();
 }

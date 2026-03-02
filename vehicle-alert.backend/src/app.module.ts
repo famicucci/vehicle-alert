@@ -3,9 +3,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import config from './typeorm.config';
 import { ColorsModule } from './colors/colors.module';
 import { BrandsModule } from './brands/brands.module';
+import { VehicleStatusModule } from './vehicle-status/vehicle-status.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config), ColorsModule, BrandsModule],
+  imports: [
+    TypeOrmModule.forRoot(config),
+    ColorsModule,
+    BrandsModule,
+    VehicleStatusModule,
+  ],
   controllers: [],
   providers: [],
 })
