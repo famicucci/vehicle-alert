@@ -15,4 +15,9 @@ export class VehiclesService {
       relations: ['brand', 'color', 'status'],
     });
   }
+
+  createVehicle(vehicle: Partial<Vehicles>): Promise<Vehicles> {
+    const newVehicle = this.vehiclesRepository.create(vehicle);
+    return this.vehiclesRepository.save(newVehicle);
+  }
 }

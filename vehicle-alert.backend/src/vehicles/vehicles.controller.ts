@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { VehiclesService } from './vehicles.service';
+import { Vehicles } from './vehicles.entity';
 
 @Controller('vehicles')
 export class VehiclesController {
@@ -8,5 +9,10 @@ export class VehiclesController {
   @Get('/')
   getVehicles() {
     return this.vehiclesService.getVehicles();
+  }
+
+  @Post('/')
+  createVehicle(@Body() vehicleData: Partial<Vehicles>) {
+    return this.vehiclesService.createVehicle(vehicleData);
   }
 }
