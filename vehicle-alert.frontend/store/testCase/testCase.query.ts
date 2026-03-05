@@ -1,0 +1,52 @@
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { CreateTestCaseInput, Vehicle } from "./types";
+
+const API_URL = "http://localhost:4000/vehicles";
+
+export function useTestCases(search: string) {
+  return useQuery<Vehicle[]>({
+    queryKey: ["test-cases", search],
+    queryFn: async () => {
+      const res = await fetch(
+        `${API_URL}?search=${encodeURIComponent(search)}`,
+      );
+      if (!res.ok) throw new Error("Error al obtener test cases");
+      const data: Vehicle[] = await res.json();
+      return data.map((q: any) => ({ ...q, selectedAnswer: null }));
+    },
+  });
+}
+
+export function useCreateTestCase() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: CreateTestCaseInput) => {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Failed to create test case");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["test-cases"] });
+    },
+  });
+}
+
+export function useDeleteTestCase() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: number) => {
+      const res = await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete test case");
+      return id;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["test-cases"] });
+    },
+  });
+}

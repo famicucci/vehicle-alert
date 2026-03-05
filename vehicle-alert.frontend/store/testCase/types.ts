@@ -7,9 +7,26 @@ export interface TestCaseState {
   search: string;
   status: TestCaseStatus;
   setSearch: (search: string) => void;
-  fetchTestCases: (search: string) => Promise<void>;
-  createTestCase: (payload: CreateTestCaseInput) => Promise<TestCase>;
-  deleteTestCase: (id: number) => Promise<void>;
 }
 
 export type TestCaseStatus = "iddle" | "loading" | "succeeded" | "failed";
+
+export interface Vehicle {
+  id: number;
+  plateNumber: string;
+  brand: Brand;
+  color: Color;
+  status: Brand;
+  selectedAnswer: null;
+}
+
+export interface Brand {
+  id: number;
+  name: string;
+}
+
+export interface Color {
+  id: number;
+  name: string;
+  code: string;
+}
