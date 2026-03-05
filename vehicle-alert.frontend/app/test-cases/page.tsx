@@ -15,36 +15,15 @@ const Page = () => {
   const { setSearch } = useTestCase();
 
   return (
-    <div>
-      <div className="flex items-center justify-between py-2 px-2">
-        <div className="flex items-center justify-start">
-          <Menu />
-          {/* <Typography variant="h3" className="mr-2">
-            Test Cases
-          </Typography> */}
-          <InputView
-            placeholder="Buscar..."
-            onChange={(e) => {
-              setTimeout(() => {
-                setSearch(e.target.value);
-              }, 1000);
-            }}
-          />
-        </div>
-        <div>
-          <Button
-            onClick={() =>
-              show("Crear un Test Case", () => (
-                <ModalContent>
-                  <TestCaseForm onSubmit={() => hide()} />
-                </ModalContent>
-              ))
-            }
-          >
-            Crear Test Case
-          </Button>
-        </div>
-      </div>
+    <div className="flex flex-col gap-4">
+      <InputView
+        placeholder="Buscar..."
+        onChange={(e) => {
+          setTimeout(() => {
+            setSearch(e.target.value);
+          }, 1000);
+        }}
+      />
       <TestCases />
     </div>
   );
