@@ -1,15 +1,16 @@
 "use client";
-import { useTestCases } from "@/store/testCase/testCase.query";
 
-const TestCases = () => {
-  const { data, isLoading, error } = useTestCases("");
+import { useVehicles } from "@/store/vehicle/vehicle.query";
+
+const Vehicles = () => {
+  const { data, isLoading, error } = useVehicles("");
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   if (error) {
-    return <div>Error loading test cases</div>;
+    return <div>Error loading vehicles</div>;
   }
 
   return (
@@ -26,4 +27,4 @@ const TestCases = () => {
   );
 };
 
-export default TestCases;
+export default Vehicles;

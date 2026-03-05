@@ -2,25 +2,30 @@ import { TestCase } from "@/interfaces/testCase";
 
 export type CreateTestCaseInput = Omit<TestCase, "id">;
 
-export interface TestCaseState {
-  testCases: TestCase[];
+export interface VehicleState {
+  vehicles: Vehicle[];
   search: string;
-  status: TestCaseStatus;
+  status: Status;
   setSearch: (search: string) => void;
 }
 
-export type TestCaseStatus = "iddle" | "loading" | "succeeded" | "failed";
+export type Status = "iddle" | "loading" | "succeeded" | "failed";
 
 export interface Vehicle {
   id: number;
   plateNumber: string;
   brand: Brand;
   color: Color;
-  status: Brand;
+  status: VehicleStatus;
   selectedAnswer: null;
 }
 
 export interface Brand {
+  id: number;
+  name: string;
+}
+
+export interface VehicleStatus {
   id: number;
   name: string;
 }

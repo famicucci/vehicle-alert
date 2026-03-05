@@ -3,14 +3,14 @@ import { CreateTestCaseInput, Vehicle } from "./types";
 
 const API_URL = "http://localhost:4000/vehicles";
 
-export function useTestCases(search: string) {
+export function useVehicles(search: string) {
   return useQuery<Vehicle[]>({
-    queryKey: ["test-cases", search],
+    queryKey: ["vehicles", search],
     queryFn: async () => {
       const res = await fetch(
         `${API_URL}?search=${encodeURIComponent(search)}`,
       );
-      if (!res.ok) throw new Error("Error al obtener test cases");
+      if (!res.ok) throw new Error("Error al obtener vehicles");
       const data: Vehicle[] = await res.json();
       return data.map((q: any) => ({ ...q, selectedAnswer: null }));
     },
