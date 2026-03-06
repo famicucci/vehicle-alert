@@ -7,7 +7,7 @@ export class Colors {
 
   @Column()
   name: string;
-
+  
   @Column()
   code: string;
 }

@@ -1,9 +1,11 @@
 "use client";
 
+import useVehicle from "@/store/vehicle/vehicle";
 import { useVehicles } from "@/store/vehicle/vehicle.query";
 
 const Vehicles = () => {
-  const { data, isLoading, error } = useVehicles("");
+  const { search } = useVehicle();
+  const { data, isLoading, error } = useVehicles(search);
 
   if (isLoading) {
     return <div>Loading...</div>;
