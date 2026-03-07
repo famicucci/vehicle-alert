@@ -15,3 +15,10 @@ export const defaultValues = {
   color: "",
   status: "",
 };
+
+export const getVehicleStatusOptions = (vehicleStatus: any[]) => {
+  return vehicleStatus.map((status) => ({
+    value: status.id,
+    label: status.name,
+  }));
+};
