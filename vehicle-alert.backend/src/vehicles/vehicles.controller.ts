@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { VehiclesService } from './vehicles.service';
 import { Vehicles } from './vehicles.entity';
 
@@ -7,8 +7,8 @@ export class VehiclesController {
   constructor(private readonly vehiclesService: VehiclesService) {}
 
   @Get('/')
-  getVehicles() {
-    return this.vehiclesService.getVehicles();
+  getVehicles(@Query('search') search: string) {
+    return this.vehiclesService.getVehicles(search);
   }
 
   @Post('/')
