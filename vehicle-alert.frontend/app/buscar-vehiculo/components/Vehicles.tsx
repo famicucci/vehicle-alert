@@ -7,12 +7,20 @@ const Vehicles = () => {
   const { search } = useVehicle();
   const { data, isLoading, error } = useVehicles(search);
 
+  if (!search) {
+    return <div>Realizar una búsqueda para encontrar vehículos</div>;
+  }
+
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>Cargando...</div>;
   }
 
   if (error) {
-    return <div>Error loading vehicles</div>;
+    return <div>Error al cargar los vehículos</div>;
+  }
+
+  if (data?.length === 0) {
+    return <div>No se encontraron vehículos para tu búsqueda</div>;
   }
 
   return (

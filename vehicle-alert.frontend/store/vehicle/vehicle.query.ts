@@ -14,6 +14,7 @@ export function useVehicles(search: string) {
       const data: Vehicle[] = await res.json();
       return data.map((q: any) => ({ ...q, selectedAnswer: null }));
     },
+    enabled: !!search.trim(),
   });
 }
 
