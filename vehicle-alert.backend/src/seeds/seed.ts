@@ -3,6 +3,7 @@ import { AppModule } from '../app.module';
 import { ColorsService } from '../colors/colors.service';
 import { BrandsService } from '../brands/brands.service';
 import { VehicleStatusService } from '../vehicle-status/vehicle-status.service';
+import { VehiclesService } from '../vehicles/vehicles.service';
 
 const colorsMocks = [
   { name: 'Rojo', code: '#FF0000' },
@@ -37,17 +38,27 @@ const brandsMocks = [
 
 const vehicleStatusMocks = [{ name: 'Residente' }, { name: 'Visitante' }];
 
+const vehicleMocks = [
+  { plateNumber: 'ABC123', colorId: 1, brandId: 2, statusId: 1 },
+  { plateNumber: 'DFG435', colorId: 3, brandId: 1, statusId: 1 },
+  { plateNumber: 'OKJ098', colorId: 2, brandId: 5, statusId: 1 },
+  { plateNumber: 'OIU873', colorId: 5, brandId: 4, statusId: 1 },
+  { plateNumber: 'XYZ789', colorId: 4, brandId: 6, statusId: 2 },
+];
+
 async function bootstrap() {
   const app = await NestFactory.createApplicationContext(AppModule);
   const colorsService = app.get(ColorsService);
   const brandsService = app.get(BrandsService);
   const vehicleStatusService = app.get(VehicleStatusService);
+  const vehicleService = app.get(VehiclesService);
 
   await Promise.all(colorsMocks.map((q) => colorsService.createColor(q)));
   await Promise.all(brandsMocks.map((q) => brandsService.createBrand(q)));
   await Promise.all(
     vehicleStatusMocks.map((q) => vehicleStatusService.createVehicleStatus(q)),
   );
+  await Promise.all(vehicleMocks.map((q) => vehicleService.createVehicle(q)));
 
   await app.close();
 }
