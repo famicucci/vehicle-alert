@@ -5,9 +5,9 @@ export class Colors {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true, nullable: false })
   name: string;
-  
-  @Column()
+
+  @Column({ unique: true, nullable: false })
   code: string;
 }
