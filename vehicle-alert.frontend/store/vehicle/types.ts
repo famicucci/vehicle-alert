@@ -1,6 +1,9 @@
-import { TestCase } from "@/interfaces/testCase";
-
-export type CreateTestCaseInput = Omit<TestCase, "id">;
+export type CreateVehicleInput = {
+  plateNumber: string;
+  brandId: number;
+  colorId: number;
+  statusId: number;
+};
 
 export interface VehicleState {
   vehicles: Vehicle[];

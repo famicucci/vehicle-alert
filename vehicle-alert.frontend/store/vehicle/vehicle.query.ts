@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { CreateTestCaseInput, Vehicle } from "./types";
+import { CreateVehicleInput, Vehicle } from "./types";
 
-const API_URL = "http://localhost:4000/vehicles";
+const API_URL = "/api/vehicles";
 
 export function useVehicles(search: string) {
   return useQuery<Vehicle[]>({
@@ -21,7 +21,7 @@ export function useVehicles(search: string) {
 export function useCreateTestCase() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (payload: CreateTestCaseInput) => {
+    mutationFn: async (payload: CreateVehicleInput) => {
       const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -31,7 +31,7 @@ export function useCreateTestCase() {
       return res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["test-cases"] });
+      queryClient.invalidateQueries({ queryKey: ["vehicles"] });
     },
   });
 }
