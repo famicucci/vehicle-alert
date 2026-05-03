@@ -11,35 +11,5 @@ services:
     volumes:
       - tms_mysql_data:/var/lib/mysql
 
-  backend:
-    build: ./vehicle-alert.backend
-    container_name: vehicle-alert-backend
-    restart: always
-    environment:
-      DB_TYPE: mysql
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_USERNAME: root
-      DB_PASSWORD: yourpassword
-      DB_NAME: vehiclealertdb
-    ports:
-      - "4000:4000"
-    depends_on:
-      - mysql
-    working_dir: /app
-
-  frontend:
-    build: ./vehicle-alert.frontend
-    container_name: vehicle-alert-frontend
-    restart: always
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:4000
-      NODE_ENV: development
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    working_dir: /app
-
 volumes:
   tms_mysql_data:

@@ -1,0 +1,49 @@
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Brand {
+  id       Int       @id @default(autoincrement())
+  name     String
+  vehicles Vehicle[]
+
+  @@map("brands")
+}
+
+model Color {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  code     String    @unique
+  vehicles Vehicle[]
+
+  @@map("colors")
+}
+
+model VehicleStatus {
+  id       Int       @id @default(autoincrement())
+  name     String
+  vehicles Vehicle[]
+
+  @@map("vehicle_status")
+}
+
+model Vehicle {
+  id          Int    @id @default(autoincrement())
+  plateNumber String @unique @map("plateNumber")
+  brandId     Int    @map("brandId")
+  colorId     Int    @map("colorId")
+  statusId    Int    @map("statusId")
+
+  brand  Brand         @relation(fields: [brandId], references: [id])
+  color  Color         @relation(fields: [colorId], references: [id])
+  status VehicleStatus @relation(fields: [statusId], references: [id])
+
+  @@map("vehicles")
+}
