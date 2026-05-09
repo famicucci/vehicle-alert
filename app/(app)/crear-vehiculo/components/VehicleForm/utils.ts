@@ -26,19 +26,19 @@ export const vehicleStatusOptions = VEHICLE_RESIDENCY_KIND_VALUES.map(
 
 export const schema = yup
   .object({
-    plateNumber: yup.string().required(),
+    plateNumber: yup.string().required("La patente es requerida"),
     brand: yup
       .string()
-      .oneOf([...VEHICLE_BRAND_KIND_VALUES])
-      .required(),
+      .oneOf([...VEHICLE_BRAND_KIND_VALUES], "Seleccioná una marca válida")
+      .required("La marca es requerida"),
     color: yup
       .string()
-      .oneOf([...VEHICLE_COLOR_KIND_VALUES])
-      .required(),
+      .oneOf([...VEHICLE_COLOR_KIND_VALUES], "Seleccioná un color válido")
+      .required("El color es requerido"),
     status: yup
       .string()
-      .oneOf([...VEHICLE_RESIDENCY_KIND_VALUES])
-      .required(),
+      .oneOf([...VEHICLE_RESIDENCY_KIND_VALUES], "Seleccioná un estado válido")
+      .required("El estado es requerido"),
   })
   .required();
 
