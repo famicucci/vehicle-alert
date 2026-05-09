@@ -1,8 +1,14 @@
+/** Alineado con el enum `VehicleResidencyKind` en Prisma y el formulario. */
+export const VEHICLE_RESIDENCY_KIND_VALUES = ["residente", "visitante"] as const;
+
+export type VehicleResidencyKind =
+  (typeof VEHICLE_RESIDENCY_KIND_VALUES)[number];
+
 export type CreateVehicleInput = {
   plateNumber: string;
   brandId: number;
   colorId: number;
-  statusId: number;
+  status: VehicleResidencyKind;
 };
 
 export interface VehicleState {
@@ -19,16 +25,11 @@ export interface Vehicle {
   plateNumber: string;
   brand: Brand;
   color: Color;
-  status: VehicleStatus;
+  status: VehicleResidencyKind;
   selectedAnswer: null;
 }
 
 export interface Brand {
-  id: number;
-  name: string;
-}
-
-export interface VehicleStatus {
   id: number;
   name: string;
 }

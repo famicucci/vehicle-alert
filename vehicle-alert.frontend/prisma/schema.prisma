@@ -26,24 +26,20 @@ model Color {
   @@map("colors")
 }
 
-model VehicleStatus {
-  id       Int       @id @default(autoincrement())
-  name     String
-  vehicles Vehicle[]
-
-  @@map("vehicle_status")
+enum VehicleResidencyKind {
+  residente
+  visitante
 }
 
 model Vehicle {
-  id          Int    @id @default(autoincrement())
-  plateNumber String @unique @map("plateNumber")
-  brandId     Int    @map("brandId")
-  colorId     Int    @map("colorId")
-  statusId    Int    @map("statusId")
+  id          Int                  @id @default(autoincrement())
+  plateNumber String               @unique @map("plateNumber")
+  brandId     Int                  @map("brandId")
+  colorId     Int                  @map("colorId")
+  status      VehicleResidencyKind @default(residente)
 
-  brand  Brand         @relation(fields: [brandId], references: [id])
-  color  Color         @relation(fields: [colorId], references: [id])
-  status VehicleStatus @relation(fields: [statusId], references: [id])
+  brand Brand @relation(fields: [brandId], references: [id])
+  color Color @relation(fields: [colorId], references: [id])
 
   @@map("vehicles")
 }

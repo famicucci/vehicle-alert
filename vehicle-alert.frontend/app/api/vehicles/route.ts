@@ -1,28 +1,34 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import {
+  type VehicleResidencyKind,
+  VEHICLE_RESIDENCY_KIND_VALUES,
+} from "@/store/vehicle/types";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-function serializeVehicle(v: {
+const RESIDENCY_VALUES = new Set<string>(VEHICLE_RESIDENCY_KIND_VALUES);
+
+type VehicleWithBrandColor = {
   id: number;
   plateNumber: string;
   brandId: number;
   colorId: number;
-  statusId: number;
+  status: VehicleResidencyKind;
   brand: { id: number; name: string };
   color: { id: number; name: string; code: string };
-  status: { id: number; name: string };
-}) {
+};
+
+function serializeVehicle(v: VehicleWithBrandColor) {
   return {
     id: v.id,
     plateNumber: v.plateNumber,
     brandId: v.brandId,
     colorId: v.colorId,
-    statusId: v.statusId,
+    status: v.status,
     brand: { id: v.brand.id, name: v.brand.name },
     color: { id: v.color.id, name: v.color.name, code: v.color.code },
-    status: { id: v.status.id, name: v.status.name },
   };
 }
 
@@ -47,11 +53,15 @@ export async function GET(req: Request) {
 
     const rows = await prisma.vehicle.findMany({
       where,
-      include: { brand: true, color: true, status: true },
+      include: { brand: true, color: true },
       orderBy: { id: "asc" },
     });
 
-    return NextResponse.json(rows.map(serializeVehicle));
+    return NextResponse.json(
+      rows.map((row) =>
+        serializeVehicle(row as unknown as VehicleWithBrandColor),
+      ),
+    );
   } catch (e) {
     console.error("[GET /api/vehicles]", e);
     return NextResponse.json(
@@ -67,21 +77,35 @@ export async function POST(req: Request) {
     const plateNumber = String(body.plateNumber ?? "").trim();
     const brandId = Number(body.brandId);
     const colorId = Number(body.colorId);
-    const statusId = Number(body.statusId);
+    const statusRaw = String(body.status ?? "").trim();
 
-    if (!plateNumber || !brandId || !colorId || !statusId) {
+    if (!plateNumber || !brandId || !colorId || !statusRaw) {
       return NextResponse.json(
-        { error: "plateNumber, brandId, colorId and statusId are required" },
+        { error: "plateNumber, brandId, colorId and status are required" },
         { status: 400 },
       );
     }
 
+    if (!RESIDENCY_VALUES.has(statusRaw)) {
+      return NextResponse.json(
+        { error: "status must be residente or visitante" },
+        { status: 400 },
+      );
+    }
+
+    const status = statusRaw as VehicleResidencyKind;
+
     const created = await prisma.vehicle.create({
-      data: { plateNumber, brandId, colorId, statusId },
-      include: { brand: true, color: true, status: true },
+      data: { plateNumber, brandId, colorId, status } as unknown as Parameters<
+        typeof prisma.vehicle.create
+      >[0]["data"],
+      include: { brand: true, color: true },
     });
 
-    return NextResponse.json(serializeVehicle(created), { status: 201 });
+    return NextResponse.json(
+      serializeVehicle(created as unknown as VehicleWithBrandColor),
+      { status: 201 },
+    );
   } catch (e) {
     console.error("[POST /api/vehicles]", e);
     return NextResponse.json(
