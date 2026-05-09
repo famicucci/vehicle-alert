@@ -1,0 +1,56 @@
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum VehicleResidencyKind {
+  residente
+  visitante
+}
+
+enum VehicleBrandKind {
+  toyota
+  peugeot
+  ford
+  volkswagen
+  chevrolet
+  fiat
+  renault
+  citroen
+  honda
+  nissan
+  bmw
+  mercedes_benz
+  audi
+  suzuki
+  mitsubishi
+}
+
+enum VehicleColorKind {
+  rojo
+  verde
+  azul
+  amarillo
+  negro
+  blanco
+  gris
+  gris_oscuro
+  marron
+  naranja
+}
+
+model Vehicle {
+  id          Int                  @id @default(autoincrement())
+  plateNumber String               @unique @map("plateNumber")
+  brand       VehicleBrandKind     @default(toyota)
+  color       VehicleColorKind     @default(rojo)
+  status      VehicleResidencyKind @default(residente)
+
+  @@map("vehicles")
+}
