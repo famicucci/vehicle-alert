@@ -30,7 +30,7 @@ const VehicleForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium text-gray-700">Marca</label>
         <Select
