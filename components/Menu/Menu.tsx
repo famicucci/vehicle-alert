@@ -1,6 +1,6 @@
 "use client";
+import { CarFront, PlusCircle, Search } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { Search, PlusCircle, CarFront } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/mis-vehiculos", icon: CarFront, label: "Mis autos" },
@@ -13,7 +13,7 @@ const Menu = () => {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-end justify-around bg-white border-t border-gray-200 shadow-lg">
-      {NAV_ITEMS.slice(0, 1).map(({ href, icon: Icon, label }) => (
+      {NAV_ITEMS.slice(1).map(({ href, icon: Icon, label }) => (
         <button
           key={href}
           onClick={() => router.push(href)}
@@ -27,8 +27,6 @@ const Menu = () => {
           <span>{label}</span>
         </button>
       ))}
-
-      {/* Botón central resaltado — buscar vehículo */}
       <button
         onClick={() => router.push("/buscar-vehiculo")}
         className="relative -top-4 flex flex-col items-center gap-1 text-xs"
@@ -50,8 +48,7 @@ const Menu = () => {
           Buscar
         </span>
       </button>
-
-      {NAV_ITEMS.slice(1).map(({ href, icon: Icon, label }) => (
+      {NAV_ITEMS.slice(0, 1).map(({ href, icon: Icon, label }) => (
         <button
           key={href}
           onClick={() => router.push(href)}
