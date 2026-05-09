@@ -3,7 +3,12 @@ import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { defaultValues, schema, vehicleStatusOptions } from "./utils";
+import {
+  defaultValues,
+  schema,
+  vehicleColorSelectOptions,
+  vehicleStatusOptions,
+} from "./utils";
 import * as yup from "yup";
 import { Select } from "@/components/Select";
 
@@ -20,7 +25,12 @@ const VehicleForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <Input control={control} name="brand" placeholder="Marca" />
-      <Input control={control} name="color" placeholder="Color" />
+      <Select
+        options={vehicleColorSelectOptions}
+        control={control}
+        name="color"
+        placeholder="Color"
+      />
       <Input control={control} name="plateNumber" placeholder="Patente" />
       <Select
         options={vehicleStatusOptions}

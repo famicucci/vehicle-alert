@@ -2,6 +2,7 @@
 
 import useVehicle from "@/store/vehicle/vehicle";
 import { useVehicles } from "@/store/vehicle/vehicle.query";
+import { VEHICLE_COLOR_META } from "@/store/vehicle/colors";
 
 const Vehicles = () => {
   const { search } = useVehicle();
@@ -28,7 +29,7 @@ const Vehicles = () => {
       {data?.map((vehicle) => (
         <div key={vehicle.id} className="flex gap-2 items-center">
           <div className="flex-grow">
-            {vehicle.brand.name} {vehicle.color.name}
+            {vehicle.brand.name} {VEHICLE_COLOR_META[vehicle.color].name}
           </div>
           <div className="font-bold">{vehicle.plateNumber}</div>
         </div>

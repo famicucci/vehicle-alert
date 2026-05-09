@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import {
+  type VehicleColorKind,
+  VEHICLE_COLOR_KIND_VALUES,
+  VEHICLE_COLOR_META,
+} from "@/store/vehicle/colors";
 import {
   type VehicleResidencyKind,
   VEHICLE_RESIDENCY_KIND_VALUES,
@@ -9,26 +15,34 @@ export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
 const RESIDENCY_VALUES = new Set<string>(VEHICLE_RESIDENCY_KIND_VALUES);
+const COLOR_VALUES = new Set<string>(VEHICLE_COLOR_KIND_VALUES);
 
-type VehicleWithBrandColor = {
+type VehicleRow = {
   id: number;
   plateNumber: string;
   brandId: number;
-  colorId: number;
+  color: VehicleColorKind;
   status: VehicleResidencyKind;
   brand: { id: number; name: string };
-  color: { id: number; name: string; code: string };
 };
 
-function serializeVehicle(v: VehicleWithBrandColor) {
+function colorKindsMatchingSearch(word: string): VehicleColorKind[] {
+  const w = word.toLowerCase();
+  return VEHICLE_COLOR_KIND_VALUES.filter(
+    (kind) =>
+      kind.toLowerCase().includes(w) ||
+      VEHICLE_COLOR_META[kind].name.toLowerCase().includes(w),
+  );
+}
+
+function serializeVehicle(v: VehicleRow) {
   return {
     id: v.id,
     plateNumber: v.plateNumber,
     brandId: v.brandId,
-    colorId: v.colorId,
+    color: v.color,
     status: v.status,
     brand: { id: v.brand.id, name: v.brand.name },
-    color: { id: v.color.id, name: v.color.name, code: v.color.code },
   };
 }
 
@@ -38,28 +52,30 @@ export async function GET(req: Request) {
     const search = searchParams.get("search")?.trim() ?? "";
 
     const words = search.split(/\s+/).filter(Boolean);
-    const where =
-      words.length > 0
-        ? {
-            AND: words.map((word) => ({
-              OR: [
-                { plateNumber: { contains: word } },
-                { brand: { name: { contains: word } } },
-                { color: { name: { contains: word } } },
-              ],
+    let where: Prisma.VehicleWhereInput | undefined;
+    if (words.length > 0) {
+      where = {
+        AND: words.map((word) => ({
+          OR: [
+            { plateNumber: { contains: word } },
+            { brand: { name: { contains: word } } },
+            ...colorKindsMatchingSearch(word).map((kind) => ({
+              color: kind,
             })),
-          }
-        : undefined;
+          ],
+        })),
+      } as Prisma.VehicleWhereInput;
+    }
 
     const rows = await prisma.vehicle.findMany({
       where,
-      include: { brand: true, color: true },
+      include: { brand: true },
       orderBy: { id: "asc" },
     });
 
     return NextResponse.json(
       rows.map((row) =>
-        serializeVehicle(row as unknown as VehicleWithBrandColor),
+        serializeVehicle(row as unknown as VehicleRow),
       ),
     );
   } catch (e) {
@@ -76,12 +92,19 @@ export async function POST(req: Request) {
     const body = (await req.json()) as Record<string, unknown>;
     const plateNumber = String(body.plateNumber ?? "").trim();
     const brandId = Number(body.brandId);
-    const colorId = Number(body.colorId);
+    const colorRaw = String(body.color ?? "").trim();
     const statusRaw = String(body.status ?? "").trim();
 
-    if (!plateNumber || !brandId || !colorId || !statusRaw) {
+    if (!plateNumber || !brandId || !colorRaw || !statusRaw) {
       return NextResponse.json(
-        { error: "plateNumber, brandId, colorId and status are required" },
+        { error: "plateNumber, brandId, color and status are required" },
+        { status: 400 },
+      );
+    }
+
+    if (!COLOR_VALUES.has(colorRaw)) {
+      return NextResponse.json(
+        { error: "Invalid color" },
         { status: 400 },
       );
     }
@@ -93,17 +116,18 @@ export async function POST(req: Request) {
       );
     }
 
+    const color = colorRaw as VehicleColorKind;
     const status = statusRaw as VehicleResidencyKind;
 
     const created = await prisma.vehicle.create({
-      data: { plateNumber, brandId, colorId, status } as unknown as Parameters<
+      data: { plateNumber, brandId, color, status } as unknown as Parameters<
         typeof prisma.vehicle.create
       >[0]["data"],
-      include: { brand: true, color: true },
+      include: { brand: true },
     });
 
     return NextResponse.json(
-      serializeVehicle(created as unknown as VehicleWithBrandColor),
+      serializeVehicle(created as unknown as VehicleRow),
       { status: 201 },
     );
   } catch (e) {
