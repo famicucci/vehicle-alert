@@ -4,9 +4,9 @@ import SelectPure from "./SelectPure/SelectPure";
 import { HelperText } from "../HelperText";
 
 const styles = {
-  container: "border border-gray-300 rounded-lg bg-white max-h-[56px]",
+  container: "border border-gray-300 rounded-lg bg-white",
   select:
-    "w-full h-full p-3 appearance-none bg-transparent text-sm font-normal leading-[120%] font-sans",
+    "w-full px-4 py-3.5 appearance-none bg-transparent text-base font-normal font-sans",
   loading: "pl-12",
   invalid: "border border-error",
 };

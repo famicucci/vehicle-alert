@@ -5,7 +5,7 @@ import { HelperText } from "../HelperText";
 
 const styles = {
   container: "border border-gray-300 rounded-lg bg-white",
-  input: "w-full p-3 border-none outline-none text-sm font-normal leading-[120%] font-sans placeholder:text-gray-400",
+  input: "w-full px-4 py-3.5 border-none outline-none text-base font-normal font-sans placeholder:text-gray-400",
   invalid: "border border-error",
   focused: "border border-primary",
 };
