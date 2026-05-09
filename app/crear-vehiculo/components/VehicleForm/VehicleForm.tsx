@@ -31,25 +31,37 @@ const VehicleForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      <Select
-        options={vehicleBrandSelectOptions}
-        control={control}
-        name="brand"
-        placeholder="Marca"
-      />
-      <Select
-        options={vehicleColorSelectOptions}
-        control={control}
-        name="color"
-        placeholder="Color"
-      />
-      <Input control={control} name="plateNumber" placeholder="Patente" />
-      <Select
-        options={vehicleStatusOptions}
-        control={control}
-        name="status"
-        placeholder="Estado"
-      />
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-medium text-gray-700">Marca</label>
+        <Select
+          options={vehicleBrandSelectOptions}
+          control={control}
+          name="brand"
+          placeholder="Seleccioná una marca"
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-medium text-gray-700">Color</label>
+        <Select
+          options={vehicleColorSelectOptions}
+          control={control}
+          name="color"
+          placeholder="Seleccioná un color"
+        />
+      </div>
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-medium text-gray-700">Patente</label>
+        <Input control={control} name="plateNumber" placeholder="Ej: ABC123" />
+      </div>
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-medium text-gray-700">Estado</label>
+        <Select
+          options={vehicleStatusOptions}
+          control={control}
+          name="status"
+          placeholder="Seleccioná un estado"
+        />
+      </div>
       <Button className="self-end" fullwidth disabled={isPending}>
         {isPending ? "Creando..." : "Crear"}
       </Button>
