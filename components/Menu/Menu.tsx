@@ -1,9 +1,9 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
-import { Search, PlusCircle, Home } from "lucide-react";
+import { Search, PlusCircle, CarFront } from "lucide-react";
 
 const NAV_ITEMS = [
-  { href: "/", icon: Home, label: "Inicio" },
+  { href: "/mis-vehiculos", icon: CarFront, label: "Mis autos" },
   { href: "/crear-vehiculo", icon: PlusCircle, label: "Crear" },
 ] as const;
 
