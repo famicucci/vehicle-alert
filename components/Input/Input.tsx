@@ -4,15 +4,13 @@ import { InputProps } from "./types";
 import { HelperText } from "../HelperText";
 
 const styles = {
-  container: "border border-gray-300 rounded-lg p-2 bg-white",
-  input: "w-full border-none outline-none",
-  placeholder: "text-sm font-normal leading-[120%] font-sans",
+  container: "border border-gray-300 rounded-lg bg-white",
+  input: "w-full p-3 border-none outline-none text-sm font-normal leading-[120%] font-sans placeholder:text-gray-400",
   invalid: "border border-error",
   focused: "border border-primary",
 };
 
 const Input = ({
-  label,
   invalid,
   className,
   errorMessage,
@@ -21,7 +19,7 @@ const Input = ({
 }: InputProps) => {
   return (
     <div className={`${className}`}>
-      <div className={`${styles.container}`}>
+      <div className={`${styles.container} ${invalid ? styles.invalid : ""}`}>
         <input
           className={`${styles.input} ${inputClassName ?? ''}`}
           {...props}

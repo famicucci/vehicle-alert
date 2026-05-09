@@ -1,17 +1,23 @@
 import React from "react";
 import { SelectPureProps } from "./types";
 
-const styles =
-  "bg-transparent border-none text-inherit cursor-pointer focus:outline-none";
+const baseStyles =
+  "bg-transparent border-none cursor-pointer focus:outline-none";
 
 const SelectPure = ({
   options,
   className,
   placeholder,
+  value,
   ...props
 }: SelectPureProps) => {
+  const isPlaceholder = value === "" || value === undefined;
   return (
-    <select className={`${styles} ${className}`} {...props}>
+    <select
+      className={`${baseStyles} ${isPlaceholder ? "text-gray-400" : "text-inherit"} ${className}`}
+      value={value}
+      {...props}
+    >
       <option value="" hidden>
         {placeholder}
       </option>
