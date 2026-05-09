@@ -1,5 +1,4 @@
 "use client";
-import { useModal } from "@/contexts/ModalContext";
 import { InputView } from "@/components/Input";
 import useVehicle from "@/store/vehicle/vehicle";
 import Vehicles from "./components/Vehicles";
@@ -11,6 +10,7 @@ const Page = () => {
     <div className="flex flex-col gap-4">
       <InputView
         placeholder="Buscar..."
+        autoFocus
         onChange={(e) => {
           setTimeout(() => {
             setSearch(e.target.value);
