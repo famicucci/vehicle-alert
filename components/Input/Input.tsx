@@ -7,8 +7,8 @@ const styles = {
   container: "border border-gray-300 rounded-lg p-2 bg-white",
   input: "w-full border-none outline-none",
   placeholder: "text-sm font-normal leading-[120%] font-sans",
-  invalid: "border border-orange-500",
-  focused: "border border-blue-300",
+  invalid: "border border-error",
+  focused: "border border-primary",
 };
 
 const Input = ({

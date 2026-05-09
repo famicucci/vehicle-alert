@@ -19,7 +19,7 @@ const Menu = () => {
           onClick={() => router.push(href)}
           className={`flex flex-col items-center gap-1 px-6 py-3 text-xs transition-colors ${
             pathname === href
-              ? "text-blue-600"
+              ? "text-primary"
               : "text-gray-500 hover:text-gray-800"
           }`}
         >
@@ -36,15 +36,15 @@ const Menu = () => {
         <span
           className={`flex items-center justify-center w-14 h-14 rounded-full shadow-md transition-colors ${
             pathname === "/buscar-vehiculo"
-              ? "bg-blue-700"
-              : "bg-blue-600 hover:bg-blue-700"
+              ? "bg-primary-hover"
+              : "bg-primary hover:bg-primary-hover"
           }`}
         >
           <Search size={26} className="text-white" />
         </span>
         <span
           className={`mt-1 ${
-            pathname === "/buscar-vehiculo" ? "text-blue-600" : "text-gray-500"
+            pathname === "/buscar-vehiculo" ? "text-primary" : "text-gray-500"
           }`}
         >
           Buscar
@@ -57,7 +57,7 @@ const Menu = () => {
           onClick={() => router.push(href)}
           className={`flex flex-col items-center gap-1 px-6 py-3 text-xs transition-colors ${
             pathname === href
-              ? "text-blue-600"
+              ? "text-primary"
               : "text-gray-500 hover:text-gray-800"
           }`}
         >

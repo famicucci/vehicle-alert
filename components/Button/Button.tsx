@@ -3,11 +3,11 @@ import { ButtonProps } from "./types";
 
 const availableVariants: Record<string, string> = {
   primary:
-    "bg-violet-500 border-violet-500 text-white hover:bg-violet-700 hover:border-violet-700",
+    "bg-primary border-primary text-white hover:bg-primary-hover hover:border-primary-hover",
   secondary:
-    "bg-white border-violet-200 text-violet-700 hover:bg-lighterLightBlue hover:border-violet-500",
+    "bg-white border-secondary text-primary hover:bg-secondary-hover hover:border-primary",
   tertiary:
-    "bg-white border-b-violet-700 text-violet-700 hover:border-b-violet-500 hover:text-violet-500",
+    "bg-white border-b-primary text-primary hover:border-b-primary-hover hover:text-primary-hover",
 };
 
 const disabledStyles: Record<string, string> = {

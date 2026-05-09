@@ -8,7 +8,7 @@ const styles = {
   select:
     "w-full h-full p-3 appearance-none bg-transparent text-sm font-normal leading-[120%] font-sans",
   loading: "pl-12",
-  invalid: "border border-orange-500",
+  invalid: "border border-error",
 };
 
 const Select = ({
