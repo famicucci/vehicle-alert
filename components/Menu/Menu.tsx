@@ -23,7 +23,7 @@ const Menu = () => {
               : "text-gray-500 hover:text-gray-800"
           }`}
         >
-          <Icon size={22} />
+          <Icon size={28} />
           <span>{label}</span>
         </button>
       ))}
@@ -61,7 +61,7 @@ const Menu = () => {
               : "text-gray-500 hover:text-gray-800"
           }`}
         >
-          <Icon size={22} />
+          <Icon size={28} />
           <span>{label}</span>
         </button>
       ))}
