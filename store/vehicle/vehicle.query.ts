@@ -18,7 +18,7 @@ export function useVehicles(search: string) {
   });
 }
 
-export function useCreateTestCase() {
+export function useCreateVehicle() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (payload: CreateVehicleInput) => {
@@ -27,7 +27,7 @@ export function useCreateTestCase() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("Failed to create test case");
+      if (!res.ok) throw new Error("Failed to create vehicle");
       return res.json();
     },
     onSuccess: () => {

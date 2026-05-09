@@ -12,15 +12,21 @@ import {
 } from "./utils";
 import * as yup from "yup";
 import { Select } from "@/components/Select";
+import { useCreateVehicle } from "@/store/vehicle/vehicle.query";
+import type { CreateVehicleInput } from "@/store/vehicle/types";
 
 const VehicleForm = () => {
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: defaultValues,
     resolver: yupResolver(schema),
   });
 
+  const { mutate: createVehicle, isPending } = useCreateVehicle();
+
   const onSubmit = (data: yup.InferType<typeof schema>) => {
-    console.log(data);
+    createVehicle(data as CreateVehicleInput, {
+      onSuccess: () => reset(),
+    });
   };
 
   return (
@@ -44,8 +50,8 @@ const VehicleForm = () => {
         name="status"
         placeholder="Estado"
       />
-      <Button className="self-end" fullwidth>
-        Crear
+      <Button className="self-end" fullwidth disabled={isPending}>
+        {isPending ? "Creando..." : "Crear"}
       </Button>
     </form>
   );
