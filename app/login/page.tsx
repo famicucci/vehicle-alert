@@ -30,7 +30,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-6">
+    <div className="flex h-dvh flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm flex flex-col gap-8">
         <div className="flex flex-col items-center gap-1">
           <Typography variant="h3">Alerta Vehículos</Typography>
