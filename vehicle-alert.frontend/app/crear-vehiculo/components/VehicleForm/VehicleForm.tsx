@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import {
   defaultValues,
   schema,
+  vehicleBrandSelectOptions,
   vehicleColorSelectOptions,
   vehicleStatusOptions,
 } from "./utils";
@@ -24,7 +25,12 @@ const VehicleForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      <Input control={control} name="brand" placeholder="Marca" />
+      <Select
+        options={vehicleBrandSelectOptions}
+        control={control}
+        name="brand"
+        placeholder="Marca"
+      />
       <Select
         options={vehicleColorSelectOptions}
         control={control}

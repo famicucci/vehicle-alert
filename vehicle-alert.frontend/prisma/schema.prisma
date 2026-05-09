@@ -9,17 +9,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Brand {
-  id       Int       @id @default(autoincrement())
-  name     String
-  vehicles Vehicle[]
-
-  @@map("brands")
-}
-
 enum VehicleResidencyKind {
   residente
   visitante
+}
+
+enum VehicleBrandKind {
+  toyota
+  peugeot
+  ford
+  volkswagen
+  chevrolet
+  fiat
+  renault
+  citroen
+  honda
+  nissan
+  bmw
+  mercedes_benz
+  audi
+  suzuki
+  mitsubishi
 }
 
 enum VehicleColorKind {
@@ -38,11 +48,9 @@ enum VehicleColorKind {
 model Vehicle {
   id          Int                  @id @default(autoincrement())
   plateNumber String               @unique @map("plateNumber")
-  brandId     Int                  @map("brandId")
+  brand       VehicleBrandKind     @default(toyota)
   color       VehicleColorKind     @default(rojo)
   status      VehicleResidencyKind @default(residente)
-
-  brand Brand @relation(fields: [brandId], references: [id])
 
   @@map("vehicles")
 }

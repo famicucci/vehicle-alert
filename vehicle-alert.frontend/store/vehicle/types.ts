@@ -1,6 +1,8 @@
-import type { VehicleColorKind } from "./colors";
-
+export { type VehicleBrandKind } from "./brands";
 export { type VehicleColorKind } from "./colors";
+
+import type { VehicleBrandKind } from "./brands";
+import type { VehicleColorKind } from "./colors";
 
 export const VEHICLE_RESIDENCY_KIND_VALUES = [
   "residente",
@@ -12,7 +14,7 @@ export type VehicleResidencyKind =
 
 export type CreateVehicleInput = {
   plateNumber: string;
-  brandId: number;
+  brand: VehicleBrandKind;
   color: VehicleColorKind;
   status: VehicleResidencyKind;
 };
@@ -29,14 +31,8 @@ export type Status = "iddle" | "loading" | "succeeded" | "failed";
 export interface Vehicle {
   id: number;
   plateNumber: string;
-  brand: Brand;
+  brand: VehicleBrandKind;
   color: VehicleColorKind;
   status: VehicleResidencyKind;
   selectedAnswer: null;
 }
-
-export interface Brand {
-  id: number;
-  name: string;
-}
-
