@@ -1,25 +1,25 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { auth } from "@/auth";
+import { NextResponse } from "next/server";
 
 const PROTECTED = ["/buscar-vehiculo", "/crear-vehiculo", "/mis-vehiculos"];
 
-export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+export default auth((req) => {
+  const session = req.auth;
 
   const isProtected = PROTECTED.some((path) =>
     req.nextUrl.pathname.startsWith(path),
   );
 
-  if (isProtected && !token) {
+  if (isProtected && !session) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
-  if (isProtected && token?.pendingApproval) {
+  if (isProtected && (session?.user as { pendingApproval?: boolean })?.pendingApproval) {
     return NextResponse.redirect(new URL("/pending-approval", req.nextUrl));
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
   matcher: [
