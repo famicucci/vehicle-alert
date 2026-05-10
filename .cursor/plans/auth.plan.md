@@ -4,28 +4,28 @@ overview: "Implementar autenticación completa con NextAuth.js: modelo User en l
 todos:
   - id: user-model
     content: Agregar modelo User a schema.prisma (con campo enabled) y crear migración
-    status: pending
+    status: completed
   - id: install-deps
     content: Instalar next-auth@beta, @auth/prisma-adapter, bcryptjs
-    status: pending
+    status: completed
   - id: nextauth-config
     content: Crear auth.ts y app/api/auth/[...nextauth]/route.ts (verificar enabled en credentials)
-    status: pending
+    status: completed
   - id: register-api
     content: Crear app/api/auth/register/route.ts (crea usuario con enabled=false)
-    status: pending
+    status: completed
   - id: register-page
     content: Crear app/register/page.tsx con formulario
-    status: pending
+    status: completed
   - id: pending-approval-page
     content: Crear app/pending-approval/page.tsx con mensaje de espera
-    status: pending
+    status: completed
   - id: login-functional
     content: Actualizar app/login/page.tsx para usar signIn de NextAuth
-    status: pending
+    status: completed
   - id: middleware
     content: Crear middleware.ts para proteger rutas /(app)/* y redirigir usuarios no habilitados
-    status: pending
+    status: completed
 isProject: false
 ---
 
