@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import Link from "next/link";
+import { Eye, EyeOff } from "lucide-react";
 
 const schema = yup.object({
   email: yup.string().email("Email inválido").required("El email es requerido"),
@@ -20,6 +21,7 @@ const defaultValues = { email: "", password: "" };
 const LoginPage = () => {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const { control, handleSubmit, formState: { isSubmitting } } = useForm({
     defaultValues,
@@ -75,9 +77,14 @@ const LoginPage = () => {
             <Input
               control={control}
               name="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               autoComplete="current-password"
+              rightElement={
+                <button type="button" onClick={() => setShowPassword((v) => !v)} className="text-gray-400 hover:text-gray-600">
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              }
             />
           </div>
 
