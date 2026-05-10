@@ -4,8 +4,8 @@ import { InputProps } from "./types";
 import { HelperText } from "../HelperText";
 
 const styles = {
-  container: "border border-gray-300 rounded-lg bg-white",
-  input: "w-full px-4 py-3.5 border-none outline-none text-base font-normal font-sans placeholder:text-gray-400",
+  container: "border border-gray-300 rounded-lg bg-white px-4 py-3.5",
+  input: "w-full border-none outline-none text-base font-normal font-sans placeholder:text-gray-400",
   invalid: "border border-error",
   focused: "border border-primary",
 };
@@ -26,7 +26,7 @@ const Input = ({
           {...props}
         />
         {rightElement && (
-          <div className="pr-3 shrink-0">{rightElement}</div>
+          <div className="ml-2 shrink-0 flex items-center">{rightElement}</div>
         )}
       </div>
       <HelperText color="error" className="mt-1">{errorMessage}</HelperText>
