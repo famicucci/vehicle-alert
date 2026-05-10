@@ -7,6 +7,7 @@ export interface InputProps
   placeholder?: string;
   errorMessage?: string;
   inputClassName?: string;
+  rightElement?: React.ReactNode;
 }
 
 export interface InputContainerProps<T extends FieldValues>
@@ -16,4 +17,5 @@ export interface InputContainerProps<T extends FieldValues>
   label?: string;
   placeholder?: string;
   className?: string;
+  rightElement?: React.ReactNode;
 }

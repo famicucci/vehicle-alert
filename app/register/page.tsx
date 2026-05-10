@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 const schema = yup.object({
   email: yup.string().email("Email inválido").required("El email es requerido"),
@@ -26,6 +27,8 @@ const defaultValues = { email: "", password: "", confirmPassword: "" };
 const RegisterPage = () => {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const { control, handleSubmit, formState: { isSubmitting } } = useForm({
     defaultValues,
@@ -80,9 +83,14 @@ const RegisterPage = () => {
             <Input
               control={control}
               name="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               autoComplete="new-password"
+              rightElement={
+                <button type="button" onClick={() => setShowPassword((v) => !v)} className="text-gray-400 hover:text-gray-600">
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              }
             />
           </div>
 
@@ -91,9 +99,14 @@ const RegisterPage = () => {
             <Input
               control={control}
               name="confirmPassword"
-              type="password"
+              type={showConfirm ? "text" : "password"}
               placeholder="••••••••"
               autoComplete="new-password"
+              rightElement={
+                <button type="button" onClick={() => setShowConfirm((v) => !v)} className="text-gray-400 hover:text-gray-600">
+                  {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              }
             />
           </div>
 
