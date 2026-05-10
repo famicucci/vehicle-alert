@@ -1,0 +1,21 @@
+---
+description: Dónde guardar y cómo gestionar los planes de features
+alwaysApply: true
+---
+
+# Feature Plans
+
+Todos los planes de features se guardan en `.cursor/plans/` dentro del repositorio, NO en `~/.cursor/plans/`.
+
+## Convención de nombres
+
+`<nombre-de-feature>.plan.md`  
+Ejemplos: `auth.plan.md`, `mis-vehiculos.plan.md`, `notificaciones.plan.md`
+
+## Al crear un plan
+
+Guardar siempre el archivo en `.cursor/plans/` del repo para que quede versionado con git y sea fácil de adjuntar con `@` desde cualquier chat.
+
+## Al retomar un plan
+
+Adjuntar el archivo con `@.cursor/plans/<nombre>.plan.md` al inicio del chat para que el agente tenga el contexto completo.
