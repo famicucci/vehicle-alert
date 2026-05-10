@@ -29,7 +29,7 @@ const Input = ({
           <div className="pr-3 shrink-0">{rightElement}</div>
         )}
       </div>
-      <HelperText color="error">{errorMessage}</HelperText>
+      <HelperText color="error" className="mt-1">{errorMessage}</HelperText>
     </div>
   );
 };

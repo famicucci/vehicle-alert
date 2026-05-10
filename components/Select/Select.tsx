@@ -36,7 +36,7 @@ const Select = ({
       <div className={`${styles.container} ${invalid && styles.invalid}`}>
         <SelectPure options={options} {...props} className={styles.select} />
       </div>
-      <HelperText color="error">{errorMessage}</HelperText>
+      <HelperText color="error" className="mt-1">{errorMessage}</HelperText>
     </div>
   );
 };
