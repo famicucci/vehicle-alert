@@ -14,7 +14,10 @@ const schema = yup.object({
   email: yup.string().email("Email inválido").required("El email es requerido"),
   password: yup
     .string()
-    .min(6, "Mínimo 6 caracteres")
+    .min(8, "Mínimo 8 caracteres")
+    .matches(/[A-Z]/, "Debe contener al menos una mayúscula")
+    .matches(/[a-z]/, "Debe contener al menos una minúscula")
+    .matches(/[0-9]/, "Debe contener al menos un número")
     .required("La contraseña es requerida"),
   confirmPassword: yup
     .string()
