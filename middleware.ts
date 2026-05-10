@@ -8,16 +8,19 @@ const PROTECTED = ["/buscar-vehiculo", "/crear-vehiculo", "/mis-vehiculos"];
 
 export default auth((req) => {
   const session = req.auth;
+  const user = session?.user as
+    | { id?: string; pendingApproval?: boolean }
+    | undefined;
 
   const isProtected = PROTECTED.some((path) =>
     req.nextUrl.pathname.startsWith(path),
   );
 
-  if (isProtected && !session) {
+  if (isProtected && !user?.id) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
-  if (isProtected && (session?.user as { pendingApproval?: boolean })?.pendingApproval) {
+  if (isProtected && user?.pendingApproval) {
     return NextResponse.redirect(new URL("/pending-approval", req.nextUrl));
   }
 

@@ -31,26 +31,19 @@ const LoginPage = () => {
   const onSubmit = async (data: yup.InferType<typeof schema>) => {
     setServerError(null);
 
-    try {
-      await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
-    } catch {
-      setServerError("Email o contraseña incorrectos");
-      return;
-    }
+    const result = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
 
-    const res = await fetch("/api/auth/session");
-    const session = await res.json();
-
-    if (!session?.user) {
+    if (!result || result.error || !result.ok) {
       setServerError("Email o contraseña incorrectos");
       return;
     }
 
     router.push("/buscar-vehiculo");
+    router.refresh();
   };
 
   return (
