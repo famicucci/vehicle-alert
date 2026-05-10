@@ -45,6 +45,16 @@ enum VehicleColorKind {
   naranja
 }
 
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  enabled   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("users")
+}
+
 model Vehicle {
   id          Int                  @id @default(autoincrement())
   plateNumber String               @unique @map("plateNumber")
