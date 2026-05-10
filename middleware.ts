@@ -14,6 +14,10 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
+  if (isProtected && token?.pendingApproval) {
+    return NextResponse.redirect(new URL("/pending-approval", req.nextUrl));
+  }
+
   return NextResponse.next();
 }
 

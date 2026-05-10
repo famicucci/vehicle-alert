@@ -31,18 +31,21 @@ const LoginPage = () => {
   const onSubmit = async (data: yup.InferType<typeof schema>) => {
     setServerError(null);
 
-    const result = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
-
-    if (result?.error === "PENDING_APPROVAL") {
-      router.push("/pending-approval");
+    try {
+      await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+    } catch {
+      setServerError("Email o contraseña incorrectos");
       return;
     }
 
-    if (result?.error) {
+    const res = await fetch("/api/auth/session");
+    const session = await res.json();
+
+    if (!session?.user) {
       setServerError("Email o contraseña incorrectos");
       return;
     }
