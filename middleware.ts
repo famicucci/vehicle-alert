@@ -1,20 +1,21 @@
-import { auth } from "@/auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-export default auth((req) => {
-  const { nextUrl, auth: session } = req;
-  const isLoggedIn = !!session;
+const PROTECTED = ["/buscar-vehiculo", "/crear-vehiculo", "/mis-vehiculos"];
 
-  const isAppRoute = nextUrl.pathname.startsWith("/buscar-vehiculo") ||
-    nextUrl.pathname.startsWith("/crear-vehiculo") ||
-    nextUrl.pathname.startsWith("/mis-vehiculos");
+export async function middleware(req: NextRequest) {
+  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
 
-  if (isAppRoute && !isLoggedIn) {
-    return NextResponse.redirect(new URL("/login", nextUrl));
+  const isProtected = PROTECTED.some((path) =>
+    req.nextUrl.pathname.startsWith(path),
+  );
+
+  if (isProtected && !token) {
+    return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: [
