@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Feature Plans
 
-Todos los planes de features se guardan en `.cursor/plans/` dentro del repositorio, NO en `~/.cursor/plans/`.
+Los planes de features se versionan en `.cursor/plans/` dentro del repositorio.
 
 ## Convención de nombres
 
@@ -14,8 +14,16 @@ Ejemplos: `auth.plan.md`, `mis-vehiculos.plan.md`, `notificaciones.plan.md`
 
 ## Al crear un plan
 
-Guardar siempre el archivo en `.cursor/plans/` del repo para que quede versionado con git y sea fácil de adjuntar con `@` desde cualquier chat.
+El `CreatePlan` tool guarda en `~/.cursor/plans/` (fuera del repo). Inmediatamente después de crearlo, copiar el archivo al repo con:
+
+```bash
+cp ~/.cursor/plans/<archivo>.plan.md .cursor/plans/<nombre>.plan.md
+```
+
+## Planes completados
+
+Mover a `.cursor/plans/done/` cuando estén terminados.
 
 ## Al retomar un plan
 
-Adjuntar el archivo con `@.cursor/plans/<nombre>.plan.md` al inicio del chat para que el agente tenga el contexto completo.
+Adjuntar el archivo con `@.cursor/plans/<nombre>.plan.md` al inicio del chat.
