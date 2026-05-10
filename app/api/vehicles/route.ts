@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { withAuth } from "@/lib/api";
 import {
   type VehicleBrandKind,
   VEHICLE_BRAND_KIND_VALUES,
@@ -59,7 +60,7 @@ function serializeVehicle(v: VehicleRow) {
   };
 }
 
-export async function GET(req: Request) {
+export const GET = withAuth(async (req) => {
   try {
     const { searchParams } = new URL(req.url);
     const search = searchParams.get("search")?.trim() ?? "";
@@ -93,9 +94,9 @@ export async function GET(req: Request) {
       { status: 500 },
     );
   }
-}
+});
 
-export async function POST(req: Request) {
+export const POST = withAuth(async (req) => {
   try {
     const body = (await req.json()) as Record<string, unknown>;
     const plateNumber = String(body.plateNumber ?? "").trim();
@@ -146,4 +147,4 @@ export async function POST(req: Request) {
       { status: 500 },
     );
   }
-}
+});
