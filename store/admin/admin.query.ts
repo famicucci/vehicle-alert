@@ -10,6 +10,11 @@ export type AdminUser = {
   createdAt: string;
 };
 
+export type AdminUsersFilters = {
+  search: string;
+  status: "all" | "enabled" | "disabled";
+};
+
 export function useToggleUserEnabled() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -24,11 +29,14 @@ export function useToggleUserEnabled() {
   });
 }
 
-export function useAdminUsers() {
+export function useAdminUsers(filters: AdminUsersFilters) {
   return useQuery<AdminUser[]>({
-    queryKey: ["admin", "users"],
+    queryKey: ["admin", "users", filters],
     queryFn: async () => {
-      const res = await fetch("/api/admin/users");
+      const params = new URLSearchParams();
+      if (filters.search) params.set("search", filters.search);
+      if (filters.status !== "all") params.set("status", filters.status);
+      const res = await fetch(`/api/admin/users?${params}`);
       if (!res.ok) throw new Error("Error al obtener usuarios");
       return res.json();
     },
