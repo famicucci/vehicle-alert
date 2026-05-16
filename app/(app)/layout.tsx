@@ -1,4 +1,5 @@
 import Menu from "@/components/Menu/Menu";
+import AppHeader from "@/components/AppHeader/AppHeader";
 
 export default function AppLayout({
   children,
@@ -7,7 +8,8 @@ export default function AppLayout({
 }) {
   return (
     <>
-      <main className="p-4 pb-24">{children}</main>
+      <AppHeader />
+      <main className="p-4 pt-16 pb-24">{children}</main>
       <Menu />
     </>
   );
