@@ -24,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) return null;
 
-        return { id: String(user.id), email: user.email, enabled: user.enabled };
+        return { id: String(user.id), email: user.email, enabled: user.enabled, role: user.role };
       },
     }),
   ],
@@ -33,12 +33,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.userId = user.id;
         token.pendingApproval = !(user as { enabled?: boolean }).enabled;
+        token.role = (user as { role?: string }).role;
       }
 
       if (token.userId && !user) {
         const dbUser = await prisma.user.findUnique({
           where: { id: Number(token.userId) },
-          select: { enabled: true },
+          select: { enabled: true, role: true },
         });
 
         if (!dbUser) return null;
@@ -52,6 +53,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         token.pendingApproval = false;
+        token.role = dbUser.role;
       }
 
       return token;
@@ -61,6 +63,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = String(token.userId);
         (session.user as { pendingApproval?: boolean }).pendingApproval =
           !!token.pendingApproval;
+        (session.user as { role?: string }).role = token.role as string | undefined;
       }
       return session;
     },

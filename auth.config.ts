@@ -15,6 +15,7 @@ export const authConfig = {
         session.user.id = String(token.userId);
         (session.user as { pendingApproval?: boolean }).pendingApproval =
           !!token.pendingApproval;
+        (session.user as { role?: string }).role = token.role as string | undefined;
       }
       return session;
     },

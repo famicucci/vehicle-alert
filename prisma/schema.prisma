@@ -9,6 +9,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
 enum VehicleResidencyKind {
   residente
   visitante
@@ -50,6 +55,7 @@ model User {
   email     String    @unique
   password  String
   enabled   Boolean   @default(false)
+  role      UserRole  @default(USER)
   createdAt DateTime  @default(now())
   vehicles  Vehicle[]
 
