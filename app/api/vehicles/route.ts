@@ -96,7 +96,7 @@ export const GET = withAuth(async (req) => {
   }
 });
 
-export const POST = withAuth(async (req) => {
+export const POST = withAuth(async (req, session) => {
   try {
     const body = (await req.json()) as Record<string, unknown>;
     const plateNumber = String(body.plateNumber ?? "").trim();
@@ -129,9 +129,10 @@ export const POST = withAuth(async (req) => {
     const brand = brandRaw as VehicleBrandKind;
     const color = colorRaw as VehicleColorKind;
     const status = statusRaw as VehicleResidencyKind;
+    const ownerId = Number(session.user.id);
 
     const created = await prisma.vehicle.create({
-      data: { plateNumber, brand, color, status } as unknown as Parameters<
+      data: { plateNumber, brand, color, status, ownerId } as unknown as Parameters<
         typeof prisma.vehicle.create
       >[0]["data"],
     });

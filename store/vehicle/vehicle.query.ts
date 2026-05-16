@@ -36,6 +36,17 @@ export function useCreateVehicle() {
   });
 }
 
+export function useMyVehicles() {
+  return useQuery<Vehicle[]>({
+    queryKey: ["vehicles", "mine"],
+    queryFn: async () => {
+      const res = await fetch("/api/vehicles/mine");
+      if (!res.ok) throw new Error("Error al obtener vehículos");
+      return res.json();
+    },
+  });
+}
+
 export function useDeleteTestCase() {
   const queryClient = useQueryClient();
   return useMutation({

@@ -2,9 +2,11 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import type { Session } from "next-auth";
 
+export type AuthenticatedSession = Session & { user: NonNullable<Session["user"]> };
+
 type AuthenticatedHandler = (
   req: Request,
-  session: Session,
+  session: AuthenticatedSession,
 ) => Promise<NextResponse>;
 
 export const withAuth = (handler: AuthenticatedHandler) =>
@@ -13,5 +15,5 @@ export const withAuth = (handler: AuthenticatedHandler) =>
     if (!session?.user) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
-    return handler(req, session);
+    return handler(req, session as AuthenticatedSession);
   };

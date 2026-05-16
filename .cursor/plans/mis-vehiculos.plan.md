@@ -4,19 +4,19 @@ overview: Agregar la relación `ownerId` entre `Vehicle` y `User` en Prisma, aso
 todos:
   - id: schema
     content: Agregar ownerId nullable y relación User↔Vehicle en prisma/schema.prisma, luego correr migrate
-    status: pending
+    status: completed
   - id: api-post
     content: Setear ownerId desde session.user.id en POST /api/vehicles
-    status: pending
+    status: completed
   - id: api-mine
     content: Crear GET /api/vehicles/mine que devuelve vehículos del usuario autenticado
-    status: pending
+    status: completed
   - id: hook
     content: Agregar useMyVehicles en store/vehicle/vehicle.query.ts
-    status: pending
+    status: completed
   - id: page
     content: Reescribir page.tsx y crear components/MyVehicles.tsx en mis-vehiculos
-    status: pending
+    status: completed
 isProject: false
 ---
 
@@ -70,7 +70,13 @@ En el handler `POST`, tomar el `session.user.id` que ya pasa `withAuth` y setear
 export const POST = withAuth(async (req, session) => {
   // ...validaciones actuales...
   const created = await prisma.vehicle.create({
-    data: { plateNumber, brand, color, status, ownerId: Number(session.user.id) },
+    data: {
+      plateNumber,
+      brand,
+      color,
+      status,
+      ownerId: Number(session.user.id),
+    },
   });
   // ...
 });
