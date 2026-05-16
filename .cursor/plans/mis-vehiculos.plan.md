@@ -1,76 +1,161 @@
 ---
-name: Mis Vehículos
-overview: Asociar vehículos a usuarios (relación User-Vehicle en la BD), exponer un endpoint de mis vehículos y mostrarlos en la página /mis-vehiculos.
+name: mis-vehiculos feature
+overview: Agregar la relación `ownerId` entre `Vehicle` y `User` en Prisma, asociar cada vehículo creado al usuario logueado, y construir la página "Mis vehículos" que lista los vehículos propios del usuario autenticado usando TanStack Query.
 todos:
-  - id: schema-relation
-    content: "PRE: eliminar vehículos manualmente. Luego agregar userId requerido a Vehicle en schema.prisma y crear migración"
+  - id: schema
+    content: Agregar ownerId nullable y relación User↔Vehicle en prisma/schema.prisma, luego correr migrate
     status: pending
-  - id: my-vehicles-endpoint
-    content: Crear app/api/my-vehicles/route.ts (GET por userId de sesión)
+  - id: api-post
+    content: Setear ownerId desde session.user.id en POST /api/vehicles
     status: pending
-  - id: post-with-user
-    content: Actualizar POST /api/vehicles para asignar userId de la sesión (requiere auth completo)
+  - id: api-mine
+    content: Crear GET /api/vehicles/mine que devuelve vehículos del usuario autenticado
     status: pending
-  - id: mis-vehiculos-page
-    content: Implementar app/(app)/mis-vehiculos/page.tsx con lista de vehículos del usuario
+  - id: hook
+    content: Agregar useMyVehicles en store/vehicle/vehicle.query.ts
+    status: pending
+  - id: page
+    content: Reescribir page.tsx y crear components/MyVehicles.tsx en mis-vehiculos
     status: pending
 isProject: false
 ---
 
-# Mis Vehículos
+# Plan: Mis Vehículos
 
-Agregar pertenencia de vehículos a usuarios: relación en el schema, endpoint propio, y página con lista.
+## Resumen de cambios
 
-> **Dependencia**: las fases 3 y 4 requieren que el plan de auth (`auth.plan.md`) esté completado, ya que necesitan leer la sesión activa del usuario logueado.
+```
+prisma/schema.prisma                              ← agregar ownerId en Vehicle
+app/api/vehicles/route.ts                         ← asignar ownerId al crear un vehículo
+app/api/vehicles/mine/route.ts                    ← nuevo endpoint GET
+store/vehicle/vehicle.query.ts                    ← nuevo hook useMyVehicles
+app/(app)/mis-vehiculos/page.tsx                  ← página (Client Component)
+app/(app)/mis-vehiculos/components/MyVehicles.tsx ← lista de vehículos propios
+```
 
-## Cambios en el schema
+---
 
-Agregar `userId` requerido a [`prisma/schema.prisma`](prisma/schema.prisma):
+## 1. Schema — `prisma/schema.prisma`
+
+Agregar `ownerId` nullable en `Vehicle` (nullable para no romper registros existentes sin dueño) y la relación inversa en `User`:
 
 ```prisma
-model Vehicle {
-  id          Int                  @id @default(autoincrement())
-  plateNumber String               @unique
-  brand       VehicleBrandKind     @default(toyota)
-  color       VehicleColorKind     @default(rojo)
-  status      VehicleResidencyKind @default(residente)
-  userId      Int
-  user        User                 @relation(fields: [userId], references: [id])
-
-  @@map("vehicles")
+model User {
+  id       Int       @id @default(autoincrement())
+  // ...campos actuales...
+  vehicles Vehicle[]
 }
 
-model User {
-  // campos existentes...
-  vehicles  Vehicle[]
+model Vehicle {
+  id          Int     @id @default(autoincrement())
+  // ...campos actuales...
+  ownerId     Int?    @map("owner_id")
+  owner       User?   @relation(fields: [ownerId], references: [id])
 }
 ```
 
-Antes de ejecutar esta tarea, eliminar manualmente todos los registros de la tabla `vehicles` (por ejemplo desde DBeaver). Eso permite que Prisma genere la columna `userId INT NOT NULL` directamente sin pasos intermedios.
+Luego correr la migración:
 
-## Endpoint de mis vehículos
+```bash
+npx prisma migrate dev --name add-vehicle-owner
+```
 
-Nuevo archivo [`app/api/my-vehicles/route.ts`](app/api/my-vehicles/route.ts):
+---
 
-- `GET` — lee el `userId` de la sesión NextAuth y devuelve solo los vehículos de ese usuario.
-- Requiere sesión activa; devuelve `401` si no hay sesión.
+## 2. API POST — `app/api/vehicles/route.ts`
 
-## Actualizar creación de vehículo
+En el handler `POST`, tomar el `session.user.id` que ya pasa `withAuth` y setearlo como `ownerId`:
 
-Modificar [`app/api/vehicles/route.ts`](app/api/vehicles/route.ts) — el `POST` lee la sesión y asigna `userId` al crear el vehículo.
+```ts
+export const POST = withAuth(async (req, session) => {
+  // ...validaciones actuales...
+  const created = await prisma.vehicle.create({
+    data: { plateNumber, brand, color, status, ownerId: Number(session.user.id) },
+  });
+  // ...
+});
+```
 
-## Página mis vehículos
+El `GET` general no cambia (buscar-vehiculo sigue mostrando todos los vehículos).
 
-Reemplazar el "Próximamente" en [`app/(app)/mis-vehiculos/page.tsx`](<app/(app)/mis-vehiculos/page.tsx>) con:
+---
 
-- Hook TanStack Query que consume `GET /api/my-vehicles`.
-- Lista de vehículos con patente, marca y color (igual al componente `Vehicles.tsx` existente).
-- Estados: cargando, error, sin vehículos, lista.
+## 3. Nuevo endpoint — `app/api/vehicles/mine/route.ts`
 
-## Archivos a crear/modificar
+Nuevo archivo que devuelve solo los vehículos del usuario autenticado:
 
-- **Modificar** [`prisma/schema.prisma`](prisma/schema.prisma) — agregar relación `Vehicle → User`
-- **Crear** migración SQL
-- **Crear** [`app/api/my-vehicles/route.ts`](app/api/my-vehicles/route.ts)
-- **Modificar** [`app/api/vehicles/route.ts`](app/api/vehicles/route.ts) — asignar `userId` en POST _(requiere auth)_
-- **Modificar** [`app/(app)/mis-vehiculos/page.tsx`](<app/(app)/mis-vehiculos/page.tsx>)
+```ts
+export const GET = withAuth(async (_req, session) => {
+  const vehicles = await prisma.vehicle.findMany({
+    where: { ownerId: Number(session.user.id) },
+    orderBy: { id: "desc" },
+  });
+  return NextResponse.json(vehicles.map(serializeVehicle));
+});
+```
+
+Reutiliza `withAuth` y `serializeVehicle` del mismo patrón que el route existente.
+
+---
+
+## 4. Hook — `store/vehicle/vehicle.query.ts`
+
+Agregar `useMyVehicles` siguiendo el mismo patrón de `useVehicles`:
+
+```ts
+export function useMyVehicles() {
+  return useQuery<Vehicle[]>({
+    queryKey: ["vehicles", "mine"],
+    queryFn: async () => {
+      const res = await fetch("/api/vehicles/mine");
+      if (!res.ok) throw new Error("Error al obtener vehículos");
+      return res.json();
+    },
+  });
+}
+```
+
+---
+
+## 5. Página — `app/(app)/mis-vehiculos/`
+
+Mismo patrón que `buscar-vehiculo`: `page.tsx` es el contenedor y delega el fetch a un sub-componente Client.
+
+**`page.tsx`** — título y renderiza `<MyVehicles />`:
+
+```tsx
+"use client";
+import { Typography } from "@/components/Typography";
+import MyVehicles from "./components/MyVehicles";
+
+const MisVehiculosPage = () => (
+  <div className="flex flex-col gap-4">
+    <Typography variant="h5">Mis vehículos</Typography>
+    <MyVehicles />
+  </div>
+);
+```
+
+**`components/MyVehicles.tsx`** — usa `useMyVehicles`, maneja estados de carga/error/vacío y renderiza la lista. Cada ítem muestra:
+
+- Patente (`plateNumber`)
+- Marca (vía `VEHICLE_BRAND_LABELS`)
+- Color (vía `VEHICLE_COLOR_META`)
+- Estado (`residente` / `visitante`)
+
+---
+
+## Flujo de datos
+
+```mermaid
+flowchart TD
+    subgraph crear [Crear vehículo]
+        A[POST /api/vehicles] -->|"withAuth + session.user.id"| B["prisma.vehicle.create(ownerId)"]
+    end
+    subgraph listar [Mis vehículos]
+        C[MisVehiculosPage] --> D["MyVehicles (Client Component)"]
+        D -->|useMyVehicles| E[GET /api/vehicles/mine]
+        E -->|"withAuth + session.user.id"| F["prisma.vehicle.findMany(ownerId)"]
+        F --> G[Lista de vehículos]
+    end
+```
