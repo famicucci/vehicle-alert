@@ -4,16 +4,16 @@ overview: Agregar la posibilidad de eliminar un vehículo propio desde "Mis veh�
 todos:
   - id: api-delete
     content: Crear DELETE /api/vehicles/[id]/route.ts con verificación de ownership
-    status: pending
+    status: completed
   - id: hook-delete
     content: Agregar useDeleteVehicle en store/vehicle/vehicle.query.ts
-    status: pending
+    status: completed
   - id: modal-confirm
     content: Crear ConfirmDeleteVehicle.tsx con mensaje y botones de acción
-    status: pending
+    status: completed
   - id: my-vehicles-btn
     content: Agregar botón Trash2 en cada fila de MyVehicles con integración del modal
-    status: pending
+    status: completed
 isProject: false
 ---
 

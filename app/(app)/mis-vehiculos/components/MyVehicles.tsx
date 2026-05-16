@@ -1,13 +1,17 @@
 "use client";
 
-import { useMyVehicles } from "@/store/vehicle/vehicle.query";
+import { useMyVehicles, useDeleteVehicle } from "@/store/vehicle/vehicle.query";
 import { VEHICLE_COLOR_META } from "@/store/vehicle/colors";
 import { VEHICLE_BRAND_LABELS } from "@/store/vehicle/brands";
-import { Car, AlertCircle, Loader2 } from "lucide-react";
+import { Car, AlertCircle, Loader2, Trash2 } from "lucide-react";
 import { Typography } from "@/components/Typography";
+import { useModal } from "@/contexts/ModalContext";
+import ConfirmDeleteVehicle from "./ConfirmDeleteVehicle";
 
 const MyVehicles = () => {
   const { data, isLoading, error } = useMyVehicles();
+  const { mutate: deleteVehicle } = useDeleteVehicle();
+  const { show, hide } = useModal();
 
   if (isLoading) {
     return (
@@ -52,6 +56,20 @@ const MyVehicles = () => {
             </div>
             <div className="text-xs text-gray-500 capitalize">{vehicle.status}</div>
             <div className="font-bold">{vehicle.plateNumber}</div>
+            <button
+              className="p-3 text-gray-400 hover:text-red-500 transition-colors"
+              onClick={() =>
+                show("Eliminar vehículo", ConfirmDeleteVehicle, {
+                  plateNumber: vehicle.plateNumber,
+                  onConfirm: () => {
+                    deleteVehicle(vehicle.id);
+                    hide();
+                  },
+                })
+              }
+            >
+              <Trash2 size={20} />
+            </button>
           </div>
         </div>
       ))}

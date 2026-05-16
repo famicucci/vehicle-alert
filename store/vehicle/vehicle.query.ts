@@ -36,6 +36,19 @@ export function useCreateVehicle() {
   });
 }
 
+export function useDeleteVehicle() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: number) => {
+      const res = await fetch(`/api/vehicles/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Error al eliminar el vehículo");
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["vehicles", "mine"] });
+    },
+  });
+}
+
 export function useMyVehicles() {
   return useQuery<Vehicle[]>({
     queryKey: ["vehicles", "mine"],
