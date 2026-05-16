@@ -1,11 +1,19 @@
 "use client";
 
-import { useAdminUsers } from "@/store/admin/admin.query";
+import { useAdminUsers, useToggleUserEnabled } from "@/store/admin/admin.query";
 import { CheckCircle, XCircle, AlertCircle, Loader2 } from "lucide-react";
 import { Typography } from "@/components/Typography";
+import { useModal } from "@/contexts/ModalContext";
+import ConfirmToggleUser from "./ConfirmToggleUser";
 
-const UsersList = () => {
+interface Props {
+  currentUserId: number;
+}
+
+const UsersList = ({ currentUserId }: Props) => {
   const { data, isLoading, error } = useAdminUsers();
+  const { mutate: toggleUser } = useToggleUserEnabled();
+  const { show, hide } = useModal();
 
   if (isLoading) {
     return (
@@ -51,10 +59,34 @@ const UsersList = () => {
             >
               {user.role === "ADMIN" ? "Admin" : "Usuario"}
             </span>
-            {user.enabled ? (
-              <CheckCircle size={20} className="text-green-500 shrink-0" />
+            {user.id === currentUserId ? (
+              <span className="p-2 shrink-0">
+                {user.enabled ? (
+                  <CheckCircle size={20} className="text-green-500" />
+                ) : (
+                  <XCircle size={20} className="text-gray-300" />
+                )}
+              </span>
             ) : (
-              <XCircle size={20} className="text-gray-300 shrink-0" />
+              <button
+                className="p-2 shrink-0"
+                onClick={() =>
+                  show("Modificar usuario", ConfirmToggleUser, {
+                    email: user.email,
+                    enabled: user.enabled,
+                    onConfirm: () => {
+                      toggleUser(user.id);
+                      hide();
+                    },
+                  })
+                }
+              >
+                {user.enabled ? (
+                  <CheckCircle size={20} className="text-green-500" />
+                ) : (
+                  <XCircle size={20} className="text-gray-300" />
+                )}
+              </button>
             )}
           </div>
         </div>
