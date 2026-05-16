@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 const { auth } = NextAuth(authConfig);
 
-const PROTECTED = ["/buscar-vehiculo", "/crear-vehiculo", "/mis-vehiculos"];
+const PROTECTED = ["/buscar-vehiculo", "/nuevo-vehiculo", "/mis-vehiculos"];
 
 export default auth((req) => {
   const session = req.auth;
@@ -30,7 +30,7 @@ export default auth((req) => {
 export const config = {
   matcher: [
     "/buscar-vehiculo/:path*",
-    "/crear-vehiculo/:path*",
+    "/nuevo-vehiculo/:path*",
     "/mis-vehiculos/:path*",
   ],
 };

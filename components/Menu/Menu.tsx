@@ -3,8 +3,8 @@ import { CarFront, PlusCircle, Search } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 
 const NAV_ITEMS = [
-  { href: "/mis-vehiculos", icon: CarFront, label: "Mis autos" },
-  { href: "/crear-vehiculo", icon: PlusCircle, label: "Crear" },
+  { href: "/mis-vehiculos", icon: CarFront, label: "Mis vehículos" },
+  { href: "/nuevo-vehiculo", icon: PlusCircle, label: "Nuevo vehículo" },
 ] as const;
 
 const Menu = () => {

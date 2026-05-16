@@ -6,7 +6,7 @@ const Page = () => {
   return (
     <>
       <Typography variant="h2" bold className="text-center mb-4">
-        Crear Vehículo
+        Nuevo Vehículo
       </Typography>
       <VehicleForm />
     </>
