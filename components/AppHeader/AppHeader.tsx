@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import Link from "next/link";
 import SignOutButton from "./SignOutButton";
 
 const AppHeader = async () => {
@@ -11,7 +12,12 @@ const AppHeader = async () => {
       <div className="flex items-center truncate max-w-[70%]">
         <span className="text-xs text-gray-400 truncate">{email}</span>
         {role === "ADMIN" && (
-          <span className="text-xs font-medium text-primary ml-2 shrink-0">Admin</span>
+          <Link
+            href="/admin/usuarios"
+            className="text-xs font-medium text-primary ml-2 shrink-0 hover:underline"
+          >
+            Admin
+          </Link>
         )}
       </div>
       <SignOutButton />
