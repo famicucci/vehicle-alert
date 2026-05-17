@@ -1,4 +1,3 @@
-import * as yup from "yup";
 import {
   type VehicleBrandKind,
   VEHICLE_BRAND_KIND_VALUES,
@@ -11,6 +10,7 @@ import {
   type VehicleResidencyKind,
   VEHICLE_RESIDENCY_KIND_VALUES,
 } from "@/store/vehicle/types";
+import * as yup from "yup";
 
 export { vehicleBrandSelectOptions } from "@/store/vehicle/brands";
 export { vehicleColorSelectOptions } from "@/store/vehicle/colors";
@@ -24,9 +24,27 @@ export const vehicleStatusOptions = VEHICLE_RESIDENCY_KIND_VALUES.map(
   (value) => ({ value, label: vehicleStatusLabels[value] }),
 );
 
+const PLATE_REGEXES = [
+  /^[A-Z]{2}\d{3}[A-Z]{2}$/, // Auto nuevo:  AB123CD
+  /^[A-Z]{3}\d{3}$/, // Auto viejo:  ABC123
+  /^[A-Z]\d{3}[A-Z]{3}$/, // Moto nueva:  A123BCD
+  /^\d{3}[A-Z]{3}$/, // Moto vieja:  123ABC
+];
+
+const normalizePlate = (value: string) =>
+  value.toUpperCase().replace(/\s/g, "");
+
 export const schema = yup
   .object({
-    plateNumber: yup.string().required("La patente es requerida"),
+    plateNumber: yup
+      .string()
+      .required("La patente es requerida")
+      .transform((value: string) => normalizePlate(value))
+      .test(
+        "valid-plate",
+        "Formato inválido. Ejemplos: AB123CD, ABC123, A123BCD, 123ABC",
+        (value) => !!value && PLATE_REGEXES.some((re) => re.test(value)),
+      ),
     brand: yup
       .string()
       .oneOf([...VEHICLE_BRAND_KIND_VALUES], "Seleccioná una marca válida")
