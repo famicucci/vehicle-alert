@@ -50,15 +50,19 @@ const MyVehicles = () => {
       {data.map((vehicle, index) => (
         <div key={vehicle.id}>
           {index !== 0 && <hr className="mx-4 border-gray-100" />}
-          <div className="flex gap-2 items-center py-3">
-            <div className="flex-grow">
-              {VEHICLE_BRAND_LABELS[vehicle.brand]}{" "}
-              {VEHICLE_COLOR_META[vehicle.color].name}
+          <div className="flex gap-3 items-center py-3">
+            <div className="flex-grow min-w-0">
+              <p className="truncate">
+                {VEHICLE_BRAND_LABELS[vehicle.brand]}{" "}
+                {VEHICLE_COLOR_META[vehicle.color].name}
+              </p>
+              <p className="text-xs text-gray-400 capitalize">{vehicle.status}</p>
             </div>
-            <div className="text-xs text-gray-500 capitalize">{vehicle.status}</div>
-            <PlateNumber plate={vehicle.plateNumber} className="font-bold" />
+            <div className="shrink-0 text-right">
+              <PlateNumber plate={vehicle.plateNumber} className="text-lg font-bold tracking-wide" />
+            </div>
             <button
-              className="p-3 text-gray-400 hover:text-red-500 transition-colors"
+              className="p-3 text-gray-400 hover:text-red-500 transition-colors shrink-0"
               onClick={() =>
                 show("Eliminar vehículo", ConfirmDeleteVehicle, {
                   plateNumber: vehicle.plateNumber,
