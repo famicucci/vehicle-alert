@@ -55,12 +55,12 @@ const UsersList = ({ currentUserId }: Props) => {
           placeholder="Buscar por email..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 outline-none focus:border-primary transition-colors"
+          className="flex-1 min-w-0 text-sm border border-gray-200 rounded-lg px-3 py-2 outline-none focus:border-primary transition-colors"
         />
         <div className="relative shrink-0" ref={dropdownRef}>
           <button
             onClick={() => setDropdownOpen((o) => !o)}
-            className="flex items-center gap-1 text-sm border border-gray-200 rounded-lg px-3 py-2 text-gray-600 hover:border-gray-300 transition-colors"
+            className="flex items-center gap-1 text-sm border border-gray-200 rounded-lg px-3 py-2 text-gray-600 hover:border-gray-300 transition-colors whitespace-nowrap"
           >
             {STATUS_LABELS[status]}
             <ChevronDown size={14} />
