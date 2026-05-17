@@ -49,13 +49,16 @@ const Vehicles = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      {data?.map((vehicle) => (
-        <div key={vehicle.id} className="flex gap-2 items-center">
-          <div className="flex-grow">
-            {VEHICLE_BRAND_LABELS[vehicle.brand]} {VEHICLE_COLOR_META[vehicle.color].name}
+    <div className="flex flex-col">
+      {data?.map((vehicle, index) => (
+        <div key={vehicle.id}>
+          {index !== 0 && <hr className="mx-4 border-gray-100" />}
+          <div className="flex items-center justify-between py-3 gap-4">
+            <p className="text-gray-500">
+              {VEHICLE_BRAND_LABELS[vehicle.brand]} {VEHICLE_COLOR_META[vehicle.color].name}
+            </p>
+            <PlateNumber plate={vehicle.plateNumber} className="text-lg font-bold tracking-wide shrink-0" />
           </div>
-          <PlateNumber plate={vehicle.plateNumber} className="font-bold" />
         </div>
       ))}
     </div>
