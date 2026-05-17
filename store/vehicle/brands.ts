@@ -1,19 +1,19 @@
 export const VEHICLE_BRAND_KIND_VALUES = [
   "toyota",
-  "peugeot",
-  "ford",
   "volkswagen",
-  "chevrolet",
-  "fiat",
   "renault",
+  "chevrolet",
+  "ford",
+  "fiat",
+  "peugeot",
   "citroen",
   "honda",
   "nissan",
+  "mitsubishi",
+  "suzuki",
   "bmw",
   "mercedes_benz",
   "audi",
-  "suzuki",
-  "mitsubishi",
 ] as const;
 
 export type VehicleBrandKind = (typeof VEHICLE_BRAND_KIND_VALUES)[number];
