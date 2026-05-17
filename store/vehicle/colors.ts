@@ -1,14 +1,14 @@
 export const VEHICLE_COLOR_KIND_VALUES = [
-  "rojo",
-  "verde",
-  "azul",
-  "amarillo",
-  "negro",
   "blanco",
-  "gris",
+  "negro",
   "gris_oscuro",
+  "gris",
+  "rojo",
+  "azul",
   "marron",
   "naranja",
+  "verde",
+  "amarillo",
 ] as const;
 
 export type VehicleColorKind = (typeof VEHICLE_COLOR_KIND_VALUES)[number];
