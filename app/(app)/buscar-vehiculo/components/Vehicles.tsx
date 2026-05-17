@@ -6,6 +6,7 @@ import { VEHICLE_COLOR_META } from "@/store/vehicle/colors";
 import { VEHICLE_BRAND_LABELS } from "@/store/vehicle/brands";
 import { Search, Car, AlertCircle, Loader2 } from "lucide-react";
 import { Typography } from "@/components/Typography";
+import { PlateNumber } from "@/components/PlateNumber/PlateNumber";
 
 const Vehicles = () => {
   const { search } = useVehicle();
@@ -54,7 +55,7 @@ const Vehicles = () => {
           <div className="flex-grow">
             {VEHICLE_BRAND_LABELS[vehicle.brand]} {VEHICLE_COLOR_META[vehicle.color].name}
           </div>
-          <div className="font-bold">{vehicle.plateNumber}</div>
+          <PlateNumber plate={vehicle.plateNumber} className="font-bold" />
         </div>
       ))}
     </div>

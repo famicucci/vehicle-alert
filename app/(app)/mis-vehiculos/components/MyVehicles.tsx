@@ -5,6 +5,7 @@ import { VEHICLE_COLOR_META } from "@/store/vehicle/colors";
 import { VEHICLE_BRAND_LABELS } from "@/store/vehicle/brands";
 import { Car, AlertCircle, Loader2, Trash2 } from "lucide-react";
 import { Typography } from "@/components/Typography";
+import { PlateNumber } from "@/components/PlateNumber/PlateNumber";
 import { useModal } from "@/contexts/ModalContext";
 import ConfirmDeleteVehicle from "./ConfirmDeleteVehicle";
 
@@ -55,7 +56,7 @@ const MyVehicles = () => {
               {VEHICLE_COLOR_META[vehicle.color].name}
             </div>
             <div className="text-xs text-gray-500 capitalize">{vehicle.status}</div>
-            <div className="font-bold">{vehicle.plateNumber}</div>
+            <PlateNumber plate={vehicle.plateNumber} className="font-bold" />
             <button
               className="p-3 text-gray-400 hover:text-red-500 transition-colors"
               onClick={() =>
